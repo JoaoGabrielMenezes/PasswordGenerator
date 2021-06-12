@@ -1,1 +1,1 @@
-# Train java programming to exercise my skills :)
+# Training java programming to exercise my skills :)
