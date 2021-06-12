@@ -1,6 +1,7 @@
 import java.security.SecureRandom;
 import java.util.Scanner;
 import java.io.IOException;
+
 import java.awt.datatransfer.StringSelection;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -23,14 +24,18 @@ public class Main {
     }
 
     public static void confirmar() throws InterruptedException, IOException {
-            System.out.println("Certeza que deseja sair? (y/n)");
+            System.out.print("Certeza que deseja sair? (y/n) ");
             certeza = sc.next();
+            certeza.substring(0,1);
+            certeza = certeza.substring(0, 1);
         if (certeza.toLowerCase().equals("s") || certeza.toLowerCase().equals("y")) {
             Thread.sleep(1000);
             clear();
             System.exit(0); 
-        }else{
+        }else if(certeza.toLowerCase().equals("n")){
             opcoes();
+        }else{
+            confirmar();
         }
     }
 
@@ -70,6 +75,8 @@ public class Main {
                 copy();
             }else if(option == 2){
                 clear();
+                System.out.println("Password: "+ANSI_GREEN+generatePassword()+ANSI_RESET); 
+                opcoes();
             }else if(option == 3){
                 Thread.sleep(500);
                 clear();
@@ -78,11 +85,8 @@ public class Main {
                 confirmar();
             }
 
-            while (option != 1 || option != 2 || option != 3 || option != 4) {
+            while (option != 1 && option != 2 && option != 3 && option != 4) {
                 clear();
-                if (option == 2) {
-                   System.out.println("Password: "+ANSI_GREEN+generatePassword()+ANSI_RESET); 
-                }
                 opcoes();
             }
         } catch (Exception e) {}
