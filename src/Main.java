@@ -20,15 +20,16 @@ public class Main {
     private static final String ANSI_RESET = "\u001B[0m", ANSI_RED = "\u001B[31m", ANSI_GREEN = "\u001B[32m";
     
     public static void clear() throws InterruptedException, IOException {
-        new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+       if (System.getProperty("os.name").contains("Windows"))
+            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+        else
+            Runtime.getRuntime().exec("clear");
     }
 
     public static void confirmar() throws InterruptedException, IOException {
-            System.out.print("Certeza que deseja sair? (y/n) ");
-            certeza = sc.next();
-            certeza.substring(0,1);
-            certeza = certeza.substring(0, 1);
-        if (certeza.toLowerCase().equals("s") || certeza.toLowerCase().equals("y")) {
+            System.out.print("Certeza que desseja sair? [y/n] ");
+            certeza = sc.next().toLowerCase().substring(0, 1);
+        if (certeza.equals("y")) {
             Thread.sleep(1000);
             clear();
             System.exit(0); 
@@ -58,38 +59,34 @@ public class Main {
         stringSelection = new StringSelection(builder.toString());
         clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         clipboard.setContents(stringSelection, null);
-        /***/
+        
         System.out.println(ANSI_GREEN+"Copiado"+ANSI_RESET);
         Thread.sleep(1000);
         clear();
-        Thread.sleep(550);
         System.exit(0);
     }
 
     public static void opcoes() throws InterruptedException, IOException
     {
-         try {
-            System.out.println("\n[1] - Copiar senha?\n[2] - Repetir senha\n[3] - Repetir gerador\n[4] - Sair ");
+        
+            System.out.println("\n[1] - Copiar senha\n[2] - Repetir senha\n[3] - Gerar outro tamanho\n[Outro] - Sair ");
             option = sc.nextInt();
-            if (option == 1) {
-                copy();
-            }else if(option == 2){
-                clear();
-                System.out.println("Password: "+ANSI_GREEN+generatePassword()+ANSI_RESET); 
-                opcoes();
-            }else if(option == 3){
-                Thread.sleep(500);
-                clear();
-                _init_();
-            }else if(option == 4){
-                confirmar();
-            }
-
-            while (option != 1 && option != 2 && option != 3 && option != 4) {
-                clear();
-                opcoes();
-            }
-        } catch (Exception e) {}
+            try{
+                switch (option) {
+                case 1: copy();
+                case 2: {
+                    clear();
+                    System.out.println("Password: "+ANSI_GREEN+generatePassword()+ANSI_RESET); 
+                    opcoes();
+                };
+                case 3: {
+                    clear();
+                    _init_();
+                };
+                default: confirmar();
+                }
+            }catch(Exception e){}
+        
     }
 
     public static void _init_() throws InterruptedException, IOException {
